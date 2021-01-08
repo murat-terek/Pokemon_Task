@@ -1,4 +1,5 @@
 import React from 'react'
+import { observer, emit, useValue, useLocal } from 'startupjs'
 import { Div, Span, Row, Content, H1, Button } from '@startupjs/ui'
 import Pokemon from '../Pokemon'
 import './index.styl'
@@ -36,7 +37,7 @@ const pokemons = [
 
 const App = () => {
   const handleClickNew = () => {
-    console.log('handleClickNew')
+    emit('url', '/pokemon')
   }
 
   return pug`
@@ -53,13 +54,13 @@ const App = () => {
         each pokemon, index in pokemons
           Div.item
             Pokemon(
-              name=pokemons.name
+              name=pokemon.name
               src=pokemon.src
               index=index
               type=pokemon.type
               abilities=pokemon.abilities.join(', ')
               description=pokemon.description
-              onEdit=(index) => console.log('onEdit', index)
+              onEdit=(index) => emit('url', '/pokemon/' + index)
               onDelete=(index) => console.log('onDelete', index)
             )
   `

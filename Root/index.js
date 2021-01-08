@@ -21,6 +21,6 @@ export default observer(() => {
   return pug`
     App(
       apps={main}
-    ) 
+    )
   `
 })

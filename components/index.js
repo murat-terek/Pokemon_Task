@@ -1,2 +1,2 @@
 // export { default as TestComponent } from './TestComponent'
-export { default as App } from './App'
+export { default as Pokemon } from './Pokemon'
