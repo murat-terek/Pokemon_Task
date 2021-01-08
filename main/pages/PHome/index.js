@@ -1,8 +1,7 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
 import { Pokemon } from 'components'
 import { observer, emit, useValue, useLocal } from 'startupjs'
-import { Div, Span, Row, Content, H1, Button } from '@startupjs/ui'
+import { Div, Span, Row, H1, Button } from '@startupjs/ui'
 import './index.styl'
 
 const pokemons = [
@@ -42,28 +41,27 @@ export default observer(function PHome () {
   }
 
   return pug`
-    ScrollView.root
-      Content.content( width='wide' )
-        Row.header( align='between' vAlign='center' )  
-          H1 Pokemons
-          Button(
-            onPress=handleClickNew
-            color='primary'
-            variant='flat'
-            size='l'
-          ) Add New
-        Row.row( wrap align='center' )
-          each pokemon, index in pokemons
-            Div.item
-              Pokemon(
-                name=pokemon.name
-                src=pokemon.src
-                index=index
-                type=pokemon.type
-                abilities=pokemon.abilities.join(', ')
-                description=pokemon.description
-                onEdit=(index) => emit('url', '/pokemon/' + index)
-                onDelete=(index) => console.log('onDelete', index)
-              )
+    Div
+      Row.header( align='between' vAlign='center' )  
+        H1 Pokemons
+        Button(
+          onPress=handleClickNew
+          color='primary'
+          variant='flat'
+          size='l'
+        ) Add New
+      Row.row( wrap align='center' )
+        each pokemon, index in pokemons
+          Div.item
+            Pokemon(
+              name=pokemon.name
+              src=pokemon.src
+              index=index
+              type=pokemon.type
+              abilities=pokemon.abilities.join(', ')
+              description=pokemon.description
+              onEdit=(index) => emit('url', '/pokemon/' + index)
+              onDelete=(index) => console.log('onDelete', index)
+            )
   `
 })

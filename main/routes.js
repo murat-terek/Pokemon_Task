@@ -7,6 +7,6 @@ export default (components = {}) => [
   {
     path: '/pokemon/:id?',
     exact: true,
-    component: components.PAbout
+    component: components.PEdit
   }
 ]
