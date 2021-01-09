@@ -1,47 +1,101 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { observer, emit } from 'startupjs'
 import { useParams } from '@startupjs/app'
 import { ScrollView } from 'react-native'
-import { Link, Div, TextInput, H1, Br, Multiselect } from '@startupjs/ui'
+import { Link, Div, TextInput, H1, Br, Select, Checkbox, Button } from '@startupjs/ui'
+import { CheckboxSet } from 'components'
 import './index.styl'
 
-// name: 'Пикачу',
-//     src: 'https://pokemongolife.ru/p/Pikachu.png',
-//     type: ['Электрический'],
-//     abilities: ['jump', 'sleep'],
-//     description:
+const TYPE_OPTIONS = [
+  { label: 'Normal', value: 1 },
+  { label: 'Fire', value: 2 },
+  { label: 'Water', value: 3 },
+  { label: 'Electric', value: 4 },
+  { label: 'Grass', value: 5 },
+  { label: 'Ice', value: 6 },
+  { label: 'Fighting', value: 7 },
+  { label: 'Poison', value: 8 }
+]
 
-console.log('Multiselect', Multiselect)
-
-const OPTIONS = [
-  { label: 'New York', value: 'ny' },
-  { label: 'Los Angeles', value: 'la' },
-  { label: 'Tokyo', value: 'tk' },
-  { label: 'Moscow', value: 'msc' },
-  { label: 'Berlin', value: 'bl' },
-  { label: 'Milan', value: 'mi' },
-  { label: 'Sydney', value: 'sy' },
-  { label: 'Porto', value: 'po' }
+const ABILITY_OPTIONS = [
+  { label: 'Electric Surge', value: 1 },
+  { label: 'Aerilate', value: 2 },
+  { label: 'Dry Skin', value: 3 },
+  { label: 'Liquid Voice', value: 4 },
+  { label: 'Steam Engine', value: 5 },
+  { label: 'Flower Veil', value: 6 },
+  { label: 'Grass Pelt', value: 7 },
+  { label: 'Grassy Surge', value: 8 },
+  { label: 'Ice Body', value: 9 },
+  { label: 'Ice Face', value: 10 },
+  { label: 'Ice Scales', value: 11 },
+  { label: 'Corrosion', value: 12 },
+  { label: 'Effect Spore', value: 13 },
+  { label: 'Immunity', value: 14 },
 ]
 
 export default observer(function PEdit () {
   const params = useParams()
 
-  console.log('params', params)
-
   const title = (params.id === undefined ? 'Add' : 'Edit') + ' pokemon'
+
+  const [name, setName] = useState('')
+  const [url, setUrl] = useState('')
+  const [type, setType] = useState()
+  const [abilities, setAbilities] = useState([])
+  const [description, setDescription] = useState('')
+
+  const handleSave = () => {
+    console.log('Name: ', name)
+    console.log('Url: ', url)
+    console.log('Type: ', type)
+    console.log('Abilities: ', abilities)
+    console.log('Description: ', description)
+  }
 
   return pug`
     Div
       Link( to='/' ) Back
       Div.form
         H1 #{title}
-        TextInput( label='Name' )
+        TextInput(
+          label='Name'
+          value=name
+          onChangeText=setName
+        )
         Br
-        TextInput( label='Url' )
+        TextInput(
+          label='Url'
+          value=url
+          onChangeText=setUrl
+        )
         Br
-        Multiselect( label='Abilities' options=OPTIONS )
+        Select(
+          label='Type'
+          options=TYPE_OPTIONS
+          value=type
+          onChange=setType
+        )
         Br
-        TextInput( label='Url' multiline numberOfLines=4 )
+        CheckboxSet(
+          label='Abilities'
+          options=ABILITY_OPTIONS
+          value=abilities
+          onChange=setAbilities
+        )
+        Br
+        TextInput(
+          label='Description'
+          multiline
+          numberOfLines=4
+          value=description
+          onChangeText=setDescription
+        )
+        Br
+        Button(
+          color='primary'
+          variant='flat'
+          onPress=handleSave
+        ) Save
   `
 })
