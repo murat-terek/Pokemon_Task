@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pokemon } from 'components'
-import { observer, emit, useValue, useLocal } from 'startupjs'
+import { observer, emit, useValue, useLocal, useQuery, useDoc, usePage, useModel } from 'startupjs'
 import { Div, Span, Row, H1, Button } from '@startupjs/ui'
 import './index.styl'
 
@@ -36,8 +36,15 @@ const pokemons = [
 ]
 
 export default observer(function PHome () {
+  const [pockemons, $pockemons] = useQuery('pockemons', {})
+  console.log('$pockemons', $pockemons)
+
   const handleClickNew = () => {
     emit('url', '/pokemon')
+  }
+
+  const handleClickDelete = (id) => {
+    const res = $pockemons.del(id)
   }
 
   return pug`
@@ -51,17 +58,17 @@ export default observer(function PHome () {
           size='l'
         ) Add New
       Row.row( wrap align='center' )
-        each pokemon, index in pokemons
+        each pokemon, index in pockemons
           Div.item
             Pokemon(
               name=pokemon.name
-              src=pokemon.src
-              index=index
+              src=pokemon.url
+              index=pokemon.id
               type=pokemon.type
               abilities=pokemon.abilities.join(', ')
               description=pokemon.description
               onEdit=(index) => emit('url', '/pokemon/' + index)
-              onDelete=(index) => console.log('onDelete', index)
+              onDelete=(index) => handleClickDelete(index)
             )
   `
 })

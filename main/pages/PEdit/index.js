@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { observer, emit } from 'startupjs'
+import React, { useState, useEffect } from 'react'
+import { observer, emit, useDoc } from 'startupjs'
 import { useParams } from '@startupjs/app'
 import { ScrollView } from 'react-native'
 import { Link, Div, TextInput, H1, Br, Select, Checkbox, Button } from '@startupjs/ui'
@@ -34,9 +34,16 @@ const ABILITY_OPTIONS = [
   { label: 'Immunity', value: 14 },
 ]
 
+const emptyPockemon = {
+  name: '',
+  url: '',
+  abilities: [],
+  description: ''
+}
+
 export default observer(function PEdit () {
   const params = useParams()
-
+  const [pockemon, $pockemon] = useDoc('pockemons', params.id)
   const title = (params.id === undefined ? 'Add' : 'Edit') + ' pokemon'
 
   const [name, setName] = useState('')
@@ -45,12 +52,34 @@ export default observer(function PEdit () {
   const [abilities, setAbilities] = useState([])
   const [description, setDescription] = useState('')
 
+  useEffect(() => {
+    if (pockemon) {
+      setName(pockemon.name)
+      setUrl(pockemon.url)
+      setType(pockemon.type)
+      setAbilities(pockemon.abilities)
+      setDescription(pockemon.description)
+    }
+  }, [pockemon])
+
   const handleSave = () => {
-    console.log('Name: ', name)
-    console.log('Url: ', url)
-    console.log('Type: ', type)
-    console.log('Abilities: ', abilities)
-    console.log('Description: ', description)
+    if (!pockemon) {
+      $pockemon.add({
+        name,
+        url,
+        type,
+        abilities,
+        description,
+      })
+    } else {
+      $pockemon.setEach({
+        name,
+        url,
+        type,
+        abilities,
+        description,
+      })
+    }
   }
 
   return pug`
