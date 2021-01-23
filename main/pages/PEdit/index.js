@@ -64,7 +64,7 @@ export default observer(function PEdit () {
 
   const handleSave = () => {
     if (!pockemon) {
-      $pockemon.add({
+      $pockemon.addSelf({
         name,
         url,
         type,
