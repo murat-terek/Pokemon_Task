@@ -1,7 +1,7 @@
-import React from 'react'
-import { Pokemon } from 'components'
+import React, { useState } from 'react'
+import { Pokemon, DeleteModal } from 'components'
 import { observer, emit, useValue, useLocal, useQuery, useDoc, usePage, useModel } from 'startupjs'
-import { Div, Span, Row, H1, Button } from '@startupjs/ui'
+import { Div, Span, Row, H1, Button, Modal } from '@startupjs/ui'
 import './index.styl'
 
 const pokemons = [
@@ -36,15 +36,17 @@ const pokemons = [
 ]
 
 export default observer(function PHome () {
+  const [deleteId, setDeleteId] = useState(null)
+  const showModal = deleteId !== null
+
   const [pockemons, $pockemons] = useQuery('pockemons', {})
   console.log('$pockemons', $pockemons)
 
-  const handleClickNew = () => {
-    emit('url', '/pokemon')
-  }
+  const handleClickNew = () => emit('url', '/pokemon')
 
-  const handleClickDelete = (id) => {
-    const res = $pockemons.del(id)
+  const handleClickDelete = id => {
+    $pockemons.del(id)
+    setDeleteId(null)
   }
 
   return pug`
@@ -67,8 +69,13 @@ export default observer(function PHome () {
               type=pokemon.type
               abilities=pokemon.abilities
               description=pokemon.description
-              onEdit=(index) => emit('url', '/pokemon/' + index)
-              onDelete=(index) => handleClickDelete(index)
+              onEdit=(id) => emit('url', '/pokemon/' + id)
+              onDelete=(id) => setDeleteId(id)
             )
+      DeleteModal(
+        visible=showModal
+        onDismiss=() => setDeleteId(null)
+        onConfirm=() => handleClickDelete(deleteId)
+      )
   `
 })

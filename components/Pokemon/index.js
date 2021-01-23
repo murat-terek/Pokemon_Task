@@ -51,10 +51,10 @@ const Pokemon = ({
 
   return pug`
     Card.card
+      Image.img( source={uri: src} )
       Tag.type(
         color=getTagColor(type)
       ) #{typeValueToLabel.get(type)}
-      Image.img( source={uri: src} )
       Br
       H3 #{name}
       Br
@@ -67,7 +67,11 @@ const Pokemon = ({
         Content #{description}
       Br
       Row( align='right' )
-        Button( onPress=handleClickDelete ) Delete
+        Button(
+          onPress=handleClickDelete
+          color='error'
+          variant='flat'
+        ) Delete
         Button.edit(
           onPress=handleClickEdit
           color='primary'
