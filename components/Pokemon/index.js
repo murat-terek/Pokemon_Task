@@ -1,9 +1,31 @@
 import React, { useState } from 'react'
-import { Br, Card, H4, Span, Row, Button, Collapse } from '@startupjs/ui'
+import { Br, Card, H3, Span, Row, Button, Collapse, Tag } from '@startupjs/ui'
 import { Image } from 'react-native'
+import { TYPE_OPTIONS, ABILITY_OPTIONS } from '../../model/PockemonModel'
 import './index.styl'
 
 const { Content } = Collapse
+
+const typeValueToLabel = new Map(TYPE_OPTIONS.map(o => [o.value, o.label]))
+const abilityValueToLabel = new Map(ABILITY_OPTIONS.map(o => [o.value, o.label]))
+
+const tagColors = [
+  "mainText",
+  "primary",
+  "success",
+  "warning",
+  "error",
+  "additional0",
+  "additional1",
+  "additional2",
+  "additional3",
+  "additional4",
+  "additional5"
+]
+
+const getTagColor = (value) => {
+  return tagColors[value % tagColors.length]
+}
 
 const Pokemon = ({
   name,
@@ -17,8 +39,6 @@ const Pokemon = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false)
 
-  console.log('collapsed', collapsed)
-
   const handleClickEdit = () => {
     onEdit && onEdit(index)
   }
@@ -27,13 +47,18 @@ const Pokemon = ({
     onDelete && onDelete(index)
   }
 
+  const abilitiesText = abilities.map(a => abilityValueToLabel.get(a) || a).join(', ')
+
   return pug`
     Card.card
+      Tag.type(
+        color=getTagColor(type)
+      ) #{typeValueToLabel.get(type)}
       Image.img( source={uri: src} )
       Br
-      H4 #{name}
+      H3 #{name}
       Br
-      Span( size='xl' ) #{abilities}
+      Span( size='xl' ) #{abilitiesText}
       Br
       Collapse( 
         open=collapsed

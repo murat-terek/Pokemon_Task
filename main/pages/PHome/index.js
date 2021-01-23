@@ -50,7 +50,7 @@ export default observer(function PHome () {
   return pug`
     Div
       Row.header( align='between' vAlign='center' )  
-        H1 Pokemons
+        H1.title Pokemons
         Button(
           onPress=handleClickNew
           color='primary'
@@ -65,7 +65,7 @@ export default observer(function PHome () {
               src=pokemon.url
               index=pokemon.id
               type=pokemon.type
-              abilities=pokemon.abilities.join(', ')
+              abilities=pokemon.abilities
               description=pokemon.description
               onEdit=(index) => emit('url', '/pokemon/' + index)
               onDelete=(index) => handleClickDelete(index)
