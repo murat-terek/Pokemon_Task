@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import { Pokemon, DeleteModal } from 'components'
 import { observer, emit, useValue, useLocal, useQuery, useDoc, usePage, useModel } from 'startupjs'
-import { Div, Span, Row, H1, Button, Modal } from '@startupjs/ui'
+import { Div, Span, Row, H1, Button, Modal, TextInput, Collapse } from '@startupjs/ui'
+import { CheckboxSet } from 'components'
+import { TYPE_OPTIONS } from '../../../model/PockemonModel'
 import './index.styl'
+
+const { Content } = Collapse
 
 const pokemons = [
   {
@@ -39,8 +43,15 @@ export default observer(function PHome () {
   const [deleteId, setDeleteId] = useState(null)
   const showModal = deleteId !== null
 
-  const [pockemons, $pockemons] = useQuery('pockemons', {})
-  console.log('$pockemons', $pockemons)
+  const [nameFilter, setNameFilter] = useState('')
+  const [typeFilter, setTypeFilter] = useState([])
+  const [collapsed, setCollapsed] = useState(false)
+
+  const queryParams = { name: { $regex: nameFilter, $options: "$i" } }
+  if (typeFilter.length) {
+    queryParams.type = { $in: typeFilter }
+  }
+  const [pockemons, $pockemons] = useQuery('pockemons', queryParams)
 
   const handleClickNew = () => emit('url', '/pokemon')
 
@@ -59,13 +70,30 @@ export default observer(function PHome () {
           variant='flat'
           size='l'
         ) Add New
+      Collapse.filters(
+        title='Filters'
+        open=collapsed
+        onChange=() => setCollapsed(!collapsed)
+      )
+        Content
+          TextInput(
+            label='Name'
+            value=nameFilter
+            onChangeText=setNameFilter
+          )
+          CheckboxSet(
+            label='Types'
+            options=TYPE_OPTIONS
+            value=typeFilter
+            onChange=setTypeFilter
+          )
       Row.row( wrap align='center' )
         each pokemon, index in pockemons
           Div.item
             Pokemon(
               name=pokemon.name
               src=pokemon.url
-              index=pokemon.id
+              id=pokemon.id
               type=pokemon.type
               abilities=pokemon.abilities
               description=pokemon.description

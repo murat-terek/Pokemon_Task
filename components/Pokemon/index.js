@@ -30,7 +30,7 @@ const getTagColor = (value) => {
 const Pokemon = ({
   name,
   src,
-  index,
+  id,
   type,
   abilities,
   description,
@@ -40,11 +40,11 @@ const Pokemon = ({
   const [collapsed, setCollapsed] = useState(false)
 
   const handleClickEdit = () => {
-    onEdit && onEdit(index)
+    onEdit && onEdit(id)
   }
 
   const handleClickDelete = () => {
-    onDelete && onDelete(index)
+    onDelete && onDelete(id)
   }
 
   const abilitiesText = abilities.map(a => abilityValueToLabel.get(a) || a).join(', ')
