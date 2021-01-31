@@ -115,19 +115,20 @@ export default observer(function PHome () {
           options=PAGE_COUNT_OPTIONS
           showEmptyValue=false
         )
-      Row.row( wrap align='center' )
-        while start < end
-          Div.item
-            Pokemon(
-              name=pockemons[start].name
-              src=pockemons[start].url
-              id=pockemons[start].id
-              type=pockemons[start].type
-              abilities=pockemons[start].abilities
-              description=pockemons[start++].description
-              onEdit=(id) => emit('url', '/pokemon/' + id)
-              onDelete=(id) => setDeleteId(id)
-            )
+      Div.grid
+        Row.row( wrap align='center' )
+          while start < end
+            Div.item
+              Pokemon(
+                name=pockemons[start].name
+                src=pockemons[start].url
+                id=pockemons[start].id
+                type=pockemons[start].type
+                abilities=pockemons[start].abilities
+                description=pockemons[start++].description
+                onEdit=(id) => emit('url', '/pokemon/' + id)
+                onDelete=(id) => setDeleteId(id)
+              )
       DeleteModal(
         visible=showModal
         onDismiss=() => setDeleteId(null)
