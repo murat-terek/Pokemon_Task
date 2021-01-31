@@ -44,7 +44,7 @@ export default observer(function PHome () {
 
   return pug`
     Div
-      Row.header( align='between' vAlign='center' )  
+      Row.header( align='between' vAlign='center' )
         H1.title Pokemons
         Button(
           onPress=handleClickNew
@@ -87,7 +87,7 @@ export default observer(function PHome () {
       Div.grid
         Row.row( wrap align='center' )
           while start < end
-            Div.item
+            Div.item( key=pockemons[start].id )
               Pokemon(
                 name=pockemons[start].name
                 src=pockemons[start].url

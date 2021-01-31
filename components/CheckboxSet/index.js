@@ -17,6 +17,7 @@ const CheckboxSet = ({ label, value = [], options = [], onChange = () => {} }) =
       Span.label #{label}
       each option in options
         Checkbox(
+          key=option.value
           label=option.label
           value=value.includes(option.value)
           onChange=handleChange(option.value)
