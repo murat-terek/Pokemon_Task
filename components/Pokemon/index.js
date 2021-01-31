@@ -60,7 +60,8 @@ const Pokemon = ({
       Br
       Span( size='xl' ) #{abilitiesText}
       Br
-      Collapse( 
+      Collapse(
+        title='Description'
         open=collapsed
         onChange=() => setCollapsed(!collapsed)
       )
