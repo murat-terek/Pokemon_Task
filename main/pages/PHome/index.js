@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Pokemon, DeleteModal } from 'components'
 import { observer, emit, useValue, useLocal, useQuery, useDoc, usePage, useModel } from 'startupjs'
-import { Div, Span, Row, H1, Button, Modal, TextInput, Collapse } from '@startupjs/ui'
+import { Div, Span, Row, H1, Button, Modal, TextInput, Collapse, Pagination, Select } from '@startupjs/ui'
 import { CheckboxSet } from 'components'
 import { TYPE_OPTIONS } from '../../../model/PockemonModel'
 import './index.styl'
@@ -39,6 +39,12 @@ const pokemons = [
   }
 ]
 
+const PAGE_COUNT_OPTIONS = [
+  { label: '5', value: 5 },
+  { label: '10', value: 10 },
+  { label: '20', value: 20 },
+]
+
 export default observer(function PHome () {
   const [deleteId, setDeleteId] = useState(null)
   const showModal = deleteId !== null
@@ -52,6 +58,13 @@ export default observer(function PHome () {
     queryParams.type = { $in: typeFilter }
   }
   const [pockemons, $pockemons] = useQuery('pockemons', queryParams)
+
+  const [page, setPage] = useState(0)
+  const [itemsInPage, setItemsInPage] = useState(5)
+  const pageCount = Math.ceil(pockemons.length / itemsInPage)
+  const realPage = Math.min(page, pageCount)
+  let start = realPage * itemsInPage
+  const end = Math.min((realPage + 1) * itemsInPage, pockemons.length)
 
   const handleClickNew = () => emit('url', '/pokemon')
 
@@ -87,16 +100,31 @@ export default observer(function PHome () {
             value=typeFilter
             onChange=setTypeFilter
           )
+      Row.pagination(
+        align='center'
+      )
+        Pagination(
+          variant='compact'
+          page=realPage
+          pages=pageCount
+          onChangePage=setPage
+        )
+        Select(
+          value=itemsInPage
+          onChange=setItemsInPage
+          options=PAGE_COUNT_OPTIONS
+          showEmptyValue=false
+        )
       Row.row( wrap align='center' )
-        each pokemon, index in pockemons
+        while start < end
           Div.item
             Pokemon(
-              name=pokemon.name
-              src=pokemon.url
-              id=pokemon.id
-              type=pokemon.type
-              abilities=pokemon.abilities
-              description=pokemon.description
+              name=pockemons[start].name
+              src=pockemons[start].url
+              id=pockemons[start].id
+              type=pockemons[start].type
+              abilities=pockemons[start].abilities
+              description=pockemons[start++].description
               onEdit=(id) => emit('url', '/pokemon/' + id)
               onDelete=(id) => setDeleteId(id)
             )
