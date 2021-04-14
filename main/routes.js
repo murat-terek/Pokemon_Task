@@ -5,8 +5,8 @@ export default (components = {}) => [
     component: components.PHome
   },
   {
-    path: '/about',
+    path: '/pokemon/:id?',
     exact: true,
-    component: components.PAbout
+    component: components.PEdit
   }
 ]
