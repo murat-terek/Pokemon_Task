@@ -3,7 +3,7 @@ import { Pokemon, DeleteModal } from 'components'
 import { observer, emit, useQuery } from 'startupjs'
 import { Div, Row, H1, Button, Modal, TextInput, Collapse, Pagination, Select } from '@startupjs/ui'
 import { CheckboxSet } from 'components'
-import { TYPE_OPTIONS } from '../../../model/PockemonModel'
+import { TYPE_OPTIONS } from '../../../const'
 import './index.styl'
 
 const { Content } = Collapse

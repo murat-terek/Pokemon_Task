@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { observer, emit, useDoc } from 'startupjs'
 import { useParams } from '@startupjs/app'
-import { ScrollView } from 'react-native'
 import { Link, Div, TextInput, H1, Br, Select, Button } from '@startupjs/ui'
 import { CheckboxSet } from 'components'
-import { TYPE_OPTIONS, ABILITY_OPTIONS } from '../../../model/PockemonModel'
+import { TYPE_OPTIONS, ABILITY_OPTIONS } from '../../../const'
 
 const emptyPockemon = {
   name: '',

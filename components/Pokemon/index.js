@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Br, Card, H3, Span, Row, Button, Collapse, Tag } from '@startupjs/ui'
 import { Image } from 'react-native'
-import { TYPE_OPTIONS, ABILITY_OPTIONS } from '../../model/PockemonModel'
+import { TYPE_OPTIONS, ABILITY_OPTIONS } from '../../const'
 import './index.styl'
 
 const { Content } = Collapse
